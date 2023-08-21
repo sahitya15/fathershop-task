@@ -18,15 +18,20 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-west-1  # Replace with your AWS region
+        aws-region: us-east-1  # Replace with your AWS region
 
     - name: Install and configure kubectl
       run: |
         curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
         chmod +x kubectl
         sudo mv kubectl /usr/local/bin/
-        aws eks update-kubeconfig --name fathersshop-task --region us-west-1  # Replace with your EKS cluster name and region
+        aws eks update-kubeconfig --name fathersshop-task --region us-east-1  # Using your actual cluster name and region
+
+    - name: Debug EKS Cluster Info
+      run: |
+        aws eks describe-cluster --name fathersshop-task --region us-east-1
+        kubectl config current-context
 
     - name: Deploy to EKS
       run: |
-        kubectl apply -f kubernetes/  # Specify the path to your Kubernetes manifest files
+        kubectl apply -f kubernetes/

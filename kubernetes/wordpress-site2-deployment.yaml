@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress-site2
+  labels:
+    app: wordpress-site2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: wordpress-site2
+  template:
+    metadata:
+      labels:
+        app: wordpress-site2
+    spec:
+      containers:
+        - name: wordpress
+          image: wordpress:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: WORDPRESS_DB_HOST
+              value: my-rds-instance.csqsuxdvzlf8.us-east-1.rds.amazonaws.com
+            - name: WORDPRESS_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secrets
+                  key: db_user
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secrets
+                  key: db_password
+            - name: WORDPRESS_DB_NAME
+              value: fswordpress
+            - name: WORDPRESS_CACHE_HOST
+              value: my-redis-cluster.5xjzv9.0001.use1.cache.amazonaws.com
+            - name: WORDPRESS_CACHE_PORT
+              value: 6379 

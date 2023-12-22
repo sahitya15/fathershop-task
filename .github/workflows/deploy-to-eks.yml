@@ -25,11 +25,11 @@ jobs:
         curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
         chmod +x kubectl
         sudo mv kubectl /usr/local/bin/
-        aws eks update-kubeconfig --name fathersshop-task --region us-east-1  # Using your actual cluster name and region
+        aws eks update-kubeconfig --name Testing --region us-east-1  # Using your actual cluster name and region
 
     - name: Debug EKS Cluster Info
       run: |
-        aws eks describe-cluster --name fathersshop-task --region us-east-1
+        aws eks describe-cluster --name Testing --region us-east-1
         kubectl config current-context
 
     - name: Deploy to EKS
